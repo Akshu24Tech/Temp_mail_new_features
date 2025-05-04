@@ -274,12 +274,25 @@ main {
     display: grid;
     grid-template-columns: 1fr 1fr 100px;
     padding: 15px;
-    background-color: var(--bg-color);
-    border-bottom: 1px solid var(--border-color);
+    background-color: #0a0a0a; /* Black background for both modes */
+    color: #ffffff; /* White text for better contrast */
+    border-bottom: 1px solid #222;
     font-weight: 600;
     font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
+/* Add a subtle hover effect to the header */
+.inbox-header > div {
+    transition: opacity 0.2s;
+}
+
+.inbox-header > div:hover {
+    opacity: 0.8;
+}
+
+/* Adjust empty inbox to match the new header */
 .empty-inbox {
     display: flex;
     flex-direction: column;
@@ -287,6 +300,7 @@ main {
     justify-content: center;
     padding: 90px 0;
     color: var(--info-text-color);
+    background-color: var(--card-bg); /* Keep the body in theme color */
 }
 
 .empty-icon {
@@ -714,6 +728,8 @@ footer {
         opacity: 1;
     }
 }
+
+
 
 
 
