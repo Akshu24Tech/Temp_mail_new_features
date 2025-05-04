@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Play a destruction sound if sound is enabled
                     if (soundEnabled) {
                         const destructSound = new Audio();
-                        destructSound.src = 'https://assets.mixkit.co/sfx/preview/mixkit-explosion-impact-1703.mp3';
+                        destructSound.src = 'pop2.mp3';
                         destructSound.volume = 0.5;
                         playSound(destructSound);
                     }
