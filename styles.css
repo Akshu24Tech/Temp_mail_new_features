@@ -12,6 +12,7 @@
     --empty-icon-color: #888;
     --footer-bg: #1a1a1a;
     --header-text: #ffffff; /* White text for header */
+    --top-section-bg: #0f0f0f; /* Slightly lighter than header */
 }
 
 [data-theme="light"] {
@@ -27,6 +28,7 @@
     --empty-icon-color: #666;
     --footer-bg: #e0e0e0;
     --header-text: #ffffff; /* White text for header */
+    --top-section-bg: #1a1a1a; /* Slightly lighter than header for light mode */
 }
 
 * {
@@ -142,23 +144,33 @@ header {
 /* Main Content */
 main {
     flex: 1;
-    padding: 30px 0;
+    padding: 0 0 30px 0;
+    background-color: var(--bg-color);
+}
+
+/* Add a new container for the top section */
+.top-section-container {
+    background-color: var(--top-section-bg);
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 0; /* Remove margin to connect with buttons section */
 }
 
 .email-box {
-    background-color: var(--card-bg);
-    border: 1px dashed var(--border-color);
+    background-color: rgba(255, 255, 255, 0.03); /* Very subtle light background */
+    border: 1px dashed rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     padding: 25px;
     margin-bottom: 25px;
     text-align: center;
+    color: var(--header-text);
 }
 
 .email-box h2 {
     margin-bottom: 20px;
     font-weight: 500;
     font-size: 20px;
-    color: var(--text-color);
+    color: var(--header-text);
 }
 
 .email-address-container {
@@ -169,12 +181,13 @@ main {
 }
 
 .email-address {
-    background-color: var(--bg-color);
+    background-color: rgba(0, 0, 0, 0.2);
     padding: 12px 20px;
     border-radius: 4px 0 0 4px;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     font-size: 16px;
     min-width: 250px;
+    color: var(--header-text);
 }
 
 .email-actions {
@@ -182,12 +195,12 @@ main {
 }
 
 .qr-btn, .copy-btn {
-    background-color: var(--bg-color);
-    border: 1px solid var(--border-color);
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-left: none;
     padding: 12px 15px;
     cursor: pointer;
-    color: var(--text-color);
+    color: var(--header-text);
 }
 
 .qr-btn {
@@ -202,19 +215,27 @@ main {
 
 .info-text {
     font-size: 14px;
-    color: var(--info-text-color);
+    color: var(--header-text);
+    opacity: 0.7;
     max-width: 700px;
     margin: 0 auto;
     line-height: 1.5;
 }
 
-/* Action Buttons */
+/* Action buttons container - change to normal background */
+.action-buttons-container {
+    background-color: var(--bg-color);
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
 .action-buttons {
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin-bottom: 25px;
+    margin-bottom: 0;
     flex-wrap: wrap;
+    padding: 0 20px;
 }
 
 .action-btn {
@@ -264,7 +285,7 @@ main {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 50px 0;
+    padding: 90px 0;
     color: var(--info-text-color);
 }
 
@@ -657,14 +678,15 @@ footer {
 
 .timer-label {
     font-size: 14px;
-    color: var(--info-text-color);
+    color: var(--header-text);
+    opacity: 0.8;
 }
 
 .timer {
     font-size: 16px;
     font-weight: 500;
     color: var(--accent-color);
-    background-color: var(--bg-color);
+    background-color: rgba(0, 0, 0, 0.2);
     padding: 5px 10px;
     border-radius: 4px;
     min-width: 70px;
@@ -692,6 +714,11 @@ footer {
         opacity: 1;
     }
 }
+
+
+
+
+
 
 
 

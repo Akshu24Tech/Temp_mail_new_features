@@ -1,4 +1,19 @@
+
 document.addEventListener('DOMContentLoaded', function() {
+
+    const emailChangeSound = new Audio();
+    emailChangeSound.src = 'pop2.mp3';
+    emailChangeSound.volume = 0.5;
+
+    // Add a function to play sounds
+    function playSound(sound) {
+        if (!soundEnabled) return;
+        
+        sound.play().catch(error => {
+            console.log('Audio playback was prevented by the browser:', error);
+        });
+    }
+
     // Make sure all DOM elements exist before accessing them
     const themeToggle = document.getElementById('themeToggle');
     const emailAddressContainer = document.querySelector('.email-address-container');
@@ -10,6 +25,63 @@ document.addEventListener('DOMContentLoaded', function() {
     const copyBtn = document.querySelector('.copy-btn');
     const copyActionBtn = document.querySelector('.copy-action');
     
+    // Add a toggle for sound in the UI
+    const soundToggle = document.createElement('div');
+    soundToggle.className = 'sound-toggle';
+    soundToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+    soundToggle.title = 'Toggle sound notifications';
+
+    // Add sound toggle next to theme toggle
+    if (themeToggle && themeToggle.parentNode) {
+        themeToggle.parentNode.insertBefore(soundToggle, themeToggle.nextSibling);
+    }
+
+    // Track sound state
+    let soundEnabled = true;
+
+    // Add click event to sound toggle
+    soundToggle.addEventListener('click', function() {
+        soundEnabled = !soundEnabled;
+        
+        // Update icon
+        const icon = soundToggle.querySelector('i');
+        if (icon) {
+            if (soundEnabled) {
+                icon.className = 'fas fa-volume-up';
+                showToast('Sound notifications enabled');
+            } else {
+                icon.className = 'fas fa-volume-mute';
+                showToast('Sound notifications disabled');
+            }
+        }
+    });
+
+    // One-Time Inbox setting
+    let oneTimeInboxEnabled = false;
+    const oneTimeInboxToggle = document.createElement('div');
+    oneTimeInboxToggle.className = 'one-time-toggle';
+    oneTimeInboxToggle.innerHTML = '<i class="fas fa-bomb"></i>';
+    oneTimeInboxToggle.title = 'One-Time Inbox (Self-Destruct After Reading)';
+
+    // Add one-time inbox toggle next to sound toggle
+    if (soundToggle && soundToggle.parentNode) {
+        soundToggle.parentNode.insertBefore(oneTimeInboxToggle, soundToggle.nextSibling);
+    }
+
+    // Add click event to one-time inbox toggle
+    oneTimeInboxToggle.addEventListener('click', function() {
+        oneTimeInboxEnabled = !oneTimeInboxEnabled;
+        
+        // Update icon and appearance
+        if (oneTimeInboxEnabled) {
+            oneTimeInboxToggle.classList.add('active');
+            showToast('One-Time Inbox enabled. Inbox will self-destruct after reading an email.');
+        } else {
+            oneTimeInboxToggle.classList.remove('active');
+            showToast('One-Time Inbox disabled.');
+        }
+    });
+
     // Initialize email data object
     let emailData = {
         totalReceived: 0,
@@ -177,6 +249,41 @@ document.addEventListener('DOMContentLoaded', function() {
         updateAnalytics();
     }
     
+    // Function to handle email viewing with self-destruct feature
+    function viewEmail(emailId) {
+        showToast('Opening email...');
+        
+        // In a real app, this would open the email content
+        // Simulate viewing email content
+        setTimeout(() => {
+            // If one-time inbox is enabled, clear the inbox after viewing
+            if (oneTimeInboxEnabled) {
+                showToast('One-Time Inbox self-destructing...');
+                
+                // Add a dramatic effect
+                const inbox = document.querySelector('.inbox');
+                if (inbox) {
+                    inbox.classList.add('self-destructing');
+                    
+                    // Play a destruction sound if sound is enabled
+                    if (soundEnabled) {
+                        const destructSound = new Audio();
+                        destructSound.src = 'https://assets.mixkit.co/sfx/preview/mixkit-explosion-impact-1703.mp3';
+                        destructSound.volume = 0.5;
+                        playSound(destructSound);
+                    }
+                    
+                    // Clear inbox after animation
+                    setTimeout(() => {
+                        inbox.classList.remove('self-destructing');
+                        clearInbox();
+                        showToast('Inbox self-destructed. All messages have been deleted.');
+                    }, 1500);
+                }
+            }
+        }, 1000);
+    }
+    
     // Function to check for new emails
     function checkForNewEmails() {
         // In a real app, this would be an API call to fetch emails
@@ -192,6 +299,9 @@ document.addEventListener('DOMContentLoaded', function() {
         ];
         
         if (sampleEmails.length > 0) {
+            // Play notification sound for new emails
+            playSound(notificationSound);
+            
             // Remove empty inbox message if there are emails
             if (emptyInbox) {
                 emptyInbox.style.display = 'none';
@@ -228,8 +338,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const viewBtn = emailItem.querySelector('.view-btn');
                 if (viewBtn) {
                     viewBtn.addEventListener('click', function() {
-                        showToast('Opening email...');
-                        // In a real app, this would open the email content
+                        viewEmail(email.id);
                     });
                 }
             });
@@ -268,6 +377,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (changeBtn) {
         changeBtn.addEventListener('click', function() {
             showToast('Generating new email address...');
+            playSound(emailChangeSound);
             clearInbox();
             generateNewEmail();
         });
@@ -388,4 +498,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Call once on page load to populate inbox
     setTimeout(checkForNewEmails, 2000);
 });
+
+
 
